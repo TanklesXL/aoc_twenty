@@ -1,6 +1,7 @@
 import gleam/int
 import gleam/list
 import gleam/result.{Result}
+import gleam/regex
 import gleam/string
 
 pub const input = [
@@ -289,11 +290,17 @@ type Policy {
 fn to_policy(policy: String) -> Result(Policy, Nil) {
   let [range, letter, code] = string.split(policy, " ")
   let letter = string.drop_right(letter, 1)
-
   try tuple(left, right) = string.split_once(range, "-")
   try left = int.parse(left)
   try right = int.parse(right)
+  Ok(Policy(left, right, letter, code))
+}
 
+fn to_policy_with_regex(policy: String) -> Result(Policy, Nil) {
+  assert Ok(r) = regex.from_string("(\\d+)-(\\d+) (\\w): (\\w+)")
+  let [_, left, right, letter, code, _] = regex.split(with: r, content: policy)
+  try left = int.parse(left)
+  try right = int.parse(right)
   Ok(Policy(left, right, letter, code))
 }
 
