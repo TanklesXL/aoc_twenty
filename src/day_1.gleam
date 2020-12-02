@@ -24,19 +24,13 @@ pub const input = [
 pub const sum = 2020
 
 pub fn pt_1(input: List(Int), sum: Int) -> Int {
-  let Ok(tuple(a, b)) =
-    input
-    |> list.sort(int.compare)
-    |> find_two_that_sum(to: sum)
+  let Ok(tuple(a, b)) = find_two_that_sum(in: input, to: sum)
 
   a * b
 }
 
 pub fn pt_2(input: List(Int), sum: Int) -> Int {
-  let Ok(tuple(a, b, c)) =
-    input
-    |> list.sort(int.compare)
-    |> find_three_that_sum(to: sum)
+  let Ok(tuple(a, b, c)) = find_three_that_sum(in: input, to: sum)
 
   a * b * c
 }
@@ -45,16 +39,9 @@ fn find_two_that_sum(
   in l: List(Int),
   to sum: Int,
 ) -> Result(tuple(Int, Int), Nil) {
-  list.find_map(
-    l,
-    fn(x) {
-      let looking_for = sum - x
-      case list.contains(l, looking_for) {
-        True -> Ok(tuple(x, looking_for))
-        False -> Error(Nil)
-      }
-    },
-  )
+  l
+  |> list.find(fn(x) { list.contains(l, sum - x) })
+  |> result.map(fn(x) { tuple(x, sum - x) })
 }
 
 fn find_three_that_sum(

@@ -313,7 +313,7 @@ fn is_valid_sled_policy(policy: Policy) -> Bool {
 }
 
 fn is_valid_toboggan_policy(policy: Policy) -> Bool {
-  let extract_left_and_right = fn(l: List(String)) {
+  let extract_left_and_right = fn(l) {
     try at_left = list.at(l, policy.left - 1)
     try at_right = list.at(l, policy.right - 1)
     Ok([at_left, at_right])
