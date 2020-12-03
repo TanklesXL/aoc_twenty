@@ -20,7 +20,7 @@ pub const pt_1_slope = Slope(right: 3, down: 1)
 pub fn pt_1(input: String, slope: Slope) -> Int {
   input
   |> pre_process()
-  |> count_trees(Pos(row_i: 0, column_i: 0), slope, 0)
+  |> count_trees(from: Pos(row_i: 0, column_i: 0), along: slope, with_acc: 0)
 }
 
 pub const pt_2_slopes = [
@@ -32,7 +32,12 @@ pub const pt_2_slopes = [
 ]
 
 pub fn pt_2(input: String, slopes: List(Slope)) -> Int {
-  let count = count_trees(pre_process(input), Pos(row_i: 0, column_i: 0), _, 0)
+  let count = count_trees(
+    in: pre_process(input),
+    from: Pos(row_i: 0, column_i: 0),
+    along: _,
+    with_acc: 0,
+  )
 
   slopes
   |> list.map(with: fn(slope) { count(slope) })
@@ -48,24 +53,25 @@ type Pos {
 }
 
 fn count_trees(
-  input: Map(Int, Map(Int, String)),
-  current: Pos,
-  slope: Slope,
-  found: Int,
+  in input: Map(Int, Map(Int, String)),
+  from current: Pos,
+  along slope: Slope,
+  with_acc found: Int,
 ) -> Int {
-  let next_pos =
-    Pos(
-      row_i: current.row_i + slope.down,
-      column_i: current.column_i + slope.right,
-    )
-  case map.get(input, current.row_i)
+  case input
+  |> map.get(current.row_i)
   |> result.then(fn(row) { map.get(row, current.column_i % map.size(row)) }) {
     Ok(space) -> {
       let found = case space {
         "." -> found
         "#" -> found + 1
       }
-      count_trees(input, next_pos, slope, found)
+      let next =
+        Pos(
+          row_i: current.row_i + slope.down,
+          column_i: current.column_i + slope.right,
+        )
+      count_trees(in: input, from: next, along: slope, with_acc: found)
     }
     _ -> found
   }
