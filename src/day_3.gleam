@@ -3,6 +3,39 @@ import gleam/map.{Map}
 import gleam/result
 import gleam/string
 
+const pt_1_slope = Slope(right: 3, down: 1)
+
+pub fn pt_1(input: String) -> Int {
+  input
+  |> pre_process()
+  |> count_trees(
+    from: Pos(row_i: 0, column_i: 0),
+    along: pt_1_slope,
+    with_acc: 0,
+  )
+}
+
+const pt_2_slopes = [
+  Slope(right: 1, down: 1),
+  Slope(right: 3, down: 1),
+  Slope(right: 5, down: 1),
+  Slope(right: 7, down: 1),
+  Slope(right: 1, down: 2),
+]
+
+pub fn pt_2(input: String) -> Int {
+  let count = count_trees(
+    in: pre_process(input),
+    from: Pos(row_i: 0, column_i: 0),
+    along: _,
+    with_acc: 0,
+  )
+
+  pt_2_slopes
+  |> list.map(count)
+  |> list.fold(1, fn(found, acc) { found * acc })
+}
+
 fn pre_process(input: String) -> Map(Int, Map(Int, String)) {
   input
   |> string.split(on: "\n")
@@ -15,36 +48,7 @@ fn pre_process(input: String) -> Map(Int, Map(Int, String)) {
   })
 }
 
-pub const pt_1_slope = Slope(right: 3, down: 1)
-
-pub fn pt_1(input: String, slope: Slope) -> Int {
-  input
-  |> pre_process()
-  |> count_trees(from: Pos(row_i: 0, column_i: 0), along: slope, with_acc: 0)
-}
-
-pub const pt_2_slopes = [
-  Slope(right: 1, down: 1),
-  Slope(right: 3, down: 1),
-  Slope(right: 5, down: 1),
-  Slope(right: 7, down: 1),
-  Slope(right: 1, down: 2),
-]
-
-pub fn pt_2(input: String, slopes: List(Slope)) -> Int {
-  let count = count_trees(
-    in: pre_process(input),
-    from: Pos(row_i: 0, column_i: 0),
-    along: _,
-    with_acc: 0,
-  )
-
-  slopes
-  |> list.map(with: fn(slope) { count(slope) })
-  |> list.fold(1, fn(found, acc) { found * acc })
-}
-
-pub type Slope {
+type Slope {
   Slope(down: Int, right: Int)
 }
 

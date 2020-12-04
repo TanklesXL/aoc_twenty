@@ -3,15 +3,15 @@ import gleam/list
 import gleam/pair
 import gleam/result.{Result}
 
-pub const sum = 2020
+const sum = 2020
 
-pub fn pt_1(input: List(Int), sum: Int) -> Int {
+pub fn pt_1(input: List(Int)) -> Int {
   let Ok(tuple(a, b)) = find_two_that_sum(in: input, to: sum)
 
   a * b
 }
 
-pub fn pt_2(input: List(Int), sum: Int) -> Int {
+pub fn pt_2(input: List(Int)) -> Int {
   let Ok(tuple(a, b, c)) = find_three_that_sum(in: input, to: sum)
 
   a * b * c
