@@ -1,4 +1,4 @@
-import gleam/float
+import gleam/bitwise
 import gleam/int
 import gleam/list
 import gleam/pair
@@ -32,10 +32,7 @@ fn calculate_seat_id(ticket: String) -> Int {
   |> list.index_map(fn(i, val) {
     case val {
       "L" | "F" -> 0
-      "R" | "B" ->
-        2.0
-        |> float.power(int.to_float(i))
-        |> float.truncate()
+      "R" | "B" -> bitwise.shift_left(1, i)
     }
   })
   |> list.fold(0, fn(val, acc) { val + acc })

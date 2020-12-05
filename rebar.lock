@@ -1,11 +1,14 @@
 {"1.2.0",
-[{<<"gleam_otp">>,{pkg,<<"gleam_otp">>,<<"0.1.2">>},0},
+[{<<"gleam_bitwise">>,{pkg,<<"gleam_bitwise">>,<<"1.0.1">>},0},
+ {<<"gleam_otp">>,{pkg,<<"gleam_otp">>,<<"0.1.2">>},0},
  {<<"gleam_stdlib">>,{pkg,<<"gleam_stdlib">>,<<"0.12.0">>},0}]}.
 [
 {pkg_hash,[
+ {<<"gleam_bitwise">>, <<"03C418001F862543681365AF31BA3358BB6E56DCDE9250042C2F825F36532E9D">>},
  {<<"gleam_otp">>, <<"BA27CEB7923C49AD76DB80E6A436C172BE3A78939DCCC8B864DBDA685C620DA4">>},
  {<<"gleam_stdlib">>, <<"722B00F9A08E44D9582922B4EF6E890CA60E2CAEBEFE81192F3CC8D337F2F0CF">>}]},
 {pkg_hash_ext,[
+ {<<"gleam_bitwise">>, <<"5F847E9F639EE725D29492D29CEF12FC56DFCCEAEB523D5ED5FC892BC3804C96">>},
  {<<"gleam_otp">>, <<"D0ACEB108E84E078C8D2A3C0933224C35552468BDD6D0C020712CE60EA393669">>},
  {<<"gleam_stdlib">>, <<"C3435F25629ED5F2C0D53A1BC2FDF89ACDFFA75F036CB27396C1EF70396F644A">>}]}
 ].
