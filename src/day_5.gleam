@@ -29,27 +29,30 @@ fn calculate_seat_id(ticket: String) -> Int {
   |> string.to_graphemes()
   |> list.split(at: 7)
   |> fn(codes) {
-    8 * calculate_position(pair.first(codes), list.range(0, 128)) + calculate_position(
-      pair.second(codes),
-      list.range(0, 8),
-    )
+    let tuple(row, column) = codes
+    8 * position(row, tuple(0, 127)) + position(column, tuple(0, 7))
   }
 }
 
-fn calculate_position(code: List(String), range: List(Int)) -> Int {
+fn position(code: List(String), range: tuple(Int, Int)) -> Int {
+  let tuple(min, max) = range
   case code {
     ["B"] | ["R"] -> {
-      let [_, res] = range
+      let tuple(_, res) = range
       res
     }
     ["F"] | ["L"] -> {
-      let [res, _] = range
+      let tuple(res, _) = range
       res
     }
-    ["B", ..rest] | ["R", ..rest] ->
-      calculate_position(rest, list.drop(range, list.length(range) / 2))
-    ["F", ..rest] | ["L", ..rest] ->
-      calculate_position(rest, list.take(range, list.length(range) / 2))
+    ["B", ..rest] | ["R", ..rest] -> {
+      let new_range = tuple(min + { max - min } / 2 + 1, max)
+      position(rest, new_range)
+    }
+    ["F", ..rest] | ["L", ..rest] -> {
+      let new_range = tuple(min, max - { max - min } / 2 - 1)
+      position(rest, new_range)
+    }
   }
 }
 
