@@ -27,21 +27,17 @@ fn sorted_ids(input: String) -> List(Int) {
 fn calculate_seat_id(ticket: String) -> Int {
   ticket
   |> string.to_graphemes()
-  |> list.split(at: 7)
-  |> fn(codes) {
-    let tuple(row, column) = codes
-    8 * position(row, tuple(0, 127)) + position(column, tuple(0, 7))
-  }
+  |> position(tuple(0, 1023))
 }
 
 fn position(code: List(String), range: tuple(Int, Int)) -> Int {
   let tuple(min, max) = range
   case code {
-    ["B"] | ["R"] -> {
+    ["R"] -> {
       let tuple(_, res) = range
       res
     }
-    ["F"] | ["L"] -> {
+    ["L"] -> {
       let tuple(res, _) = range
       res
     }
