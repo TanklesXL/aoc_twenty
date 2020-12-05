@@ -27,29 +27,18 @@ fn sorted_ids(input: String) -> List(Int) {
 fn calculate_seat_id(ticket: String) -> Int {
   ticket
   |> string.to_graphemes()
-  |> position(tuple(0, 1023))
-}
-
-fn position(code: List(String), range: tuple(Int, Int)) -> Int {
-  let tuple(min, max) = range
-  case code {
-    ["R"] -> {
-      let tuple(_, res) = range
-      res
+  |> list.reverse()
+  |> list.index_map(fn(i, val) {
+    case val {
+      "L" | "F" -> 0
+      "R" | "B" ->
+        // need to do 2 ^ i this way because language doesn't seem to have exponents (yet)
+        2
+        |> list.repeat(i)
+        |> list.fold(1, fn(val, acc) { val * acc })
     }
-    ["L"] -> {
-      let tuple(res, _) = range
-      res
-    }
-    ["B", ..rest] | ["R", ..rest] -> {
-      let new_range = tuple(min + { max - min } / 2 + 1, max)
-      position(rest, new_range)
-    }
-    ["F", ..rest] | ["L", ..rest] -> {
-      let new_range = tuple(min, max - { max - min } / 2 - 1)
-      position(rest, new_range)
-    }
-  }
+  })
+  |> list.fold(0, fn(num, acc) { num + acc })
 }
 
 fn find_missing(seats: List(Int)) -> Int {
