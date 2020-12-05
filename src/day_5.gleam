@@ -33,8 +33,8 @@ fn calculate_seat_id(ticket: String) -> Int {
     case val {
       "L" | "F" -> 0
       "R" | "B" ->
-        2
-        |> float.power(i)
+        2.0
+        |> float.power(int.to_float(i))
         |> float.truncate()
     }
   })
