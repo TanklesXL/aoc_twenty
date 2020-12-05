@@ -1,6 +1,7 @@
+import gleam/float
 import gleam/int
-import gleam/pair
 import gleam/list
+import gleam/pair
 import gleam/result
 import gleam/string
 
@@ -32,13 +33,12 @@ fn calculate_seat_id(ticket: String) -> Int {
     case val {
       "L" | "F" -> 0
       "R" | "B" ->
-        // need to do 2 ^ i this way because language doesn't seem to have exponents (yet)
         2
-        |> list.repeat(i)
-        |> list.fold(1, fn(val, acc) { val * acc })
+        |> float.power(i)
+        |> float.truncate()
     }
   })
-  |> list.fold(0, fn(num, acc) { num + acc })
+  |> list.fold(0, fn(val, acc) { val + acc })
 }
 
 fn find_missing(seats: List(Int)) -> Int {
