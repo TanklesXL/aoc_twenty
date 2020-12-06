@@ -3,6 +3,7 @@ import day_2
 import day_3
 import day_4
 import day_5
+import day_6
 import inputs
 import gleam/should
 
@@ -44,4 +45,12 @@ pub fn day_5_test() {
 
   day_5.pt_2(inputs.day_5)
   |> should.equal(597)
+}
+
+pub fn day_6_test() {
+  day_6.pt_1(inputs.day_6)
+  |> should.equal(6457)
+
+  day_6.pt_2(inputs.day_6)
+  |> should.equal(3260)
 }
