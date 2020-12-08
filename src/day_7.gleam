@@ -62,7 +62,7 @@ fn parse_capacity(capacities: String) -> List(Capacity) {
 }
 
 fn how_many_can_hold_goal(in bags: Bags, with_goal bag: String) -> Int {
-  let starting_set = set.insert(set.new(), goal_bag)
+  let starting_set = set.insert(set.new(), bag)
 
   bags
   |> can_hold(starting_set)
