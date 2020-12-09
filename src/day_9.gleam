@@ -5,13 +5,11 @@ import gleam/result
 import gleam/set.{Set}
 
 pub fn pt_1(input: List(Int)) -> Int {
-  input
-  |> list.split(25)
-  |> fn(t) { find_not_sum_of_pair(pair.first(t), pair.second(t)) }
+  find_not_sum_of_pair(input, 25)
 }
 
 pub fn pt_2(input: List(Int)) -> Int {
-  let sum = pt_1(input)
+  let sum = find_not_sum_of_pair(input, 25)
 
   input
   |> list.split_while(fn(i) { i != sum })
@@ -21,17 +19,16 @@ pub fn pt_2(input: List(Int)) -> Int {
   |> result.unwrap(0)
 }
 
-fn find_not_sum_of_pair(prelude: List(Int), to_check: List(Int)) -> Int {
-  let [h, ..rest] = to_check
-  case prelude
+fn find_not_sum_of_pair(l: List(Int), preamble_size: Int) -> Int {
+  let tuple(preamble, [h, ..]) = list.split(l, preamble_size)
+  case preamble
   |> sum_pairs()
   |> set.contains(h) {
     False -> h
     True ->
-      prelude
+      l
       |> list.drop(1)
-      |> list.append([h])
-      |> find_not_sum_of_pair(rest)
+      |> find_not_sum_of_pair(preamble_size)
   }
 }
 
@@ -51,7 +48,7 @@ fn sum_pairs(l: List(Int)) -> Set(Int) {
 fn sum_ranges_until(l: List(Int), sum: Int) -> Result(List(Int), Nil) {
   case l {
     [] | [_] -> Error(Nil)
-    [h, ..rest] ->
+    [_h, ..rest] ->
       case sum_until(l, sum, 0, []) {
         Error(_) -> sum_ranges_until(rest, sum)
         res -> res
