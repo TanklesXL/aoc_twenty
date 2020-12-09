@@ -1,7 +1,7 @@
 import gleam/int
 import gleam/list
 import gleam/pair
-import gleam/result.{Result}
+import gleam/result
 
 const sum = 2020
 

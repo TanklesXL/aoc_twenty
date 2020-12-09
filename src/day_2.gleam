@@ -1,6 +1,6 @@
 import gleam/int
 import gleam/list
-import gleam/result.{Result}
+import gleam/result
 import gleam/regex
 import gleam/string
 
