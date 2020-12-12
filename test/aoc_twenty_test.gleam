@@ -8,6 +8,7 @@ import day_7
 import day_8
 import day_9
 import day_10
+import day_11
 import inputs
 import gleam/should
 
@@ -89,4 +90,12 @@ pub fn day_10_test() {
 
   day_10.pt_2(inputs.day_10)
   |> should.equal(56693912375296)
+}
+
+pub fn day_11_test() {
+  day_11.pt_1(inputs.day_11)
+  |> should.equal(2238)
+
+  day_11.pt_2(inputs.day_11)
+  |> should.equal(2013)
 }
