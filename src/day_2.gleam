@@ -29,19 +29,11 @@ fn to_policy(policy: String) -> Result(Policy, Nil) {
   Ok(Policy(left, right, letter, code))
 }
 
-fn to_policy_with_regex(policy: String) -> Result(Policy, Nil) {
-  assert Ok(r) = regex.from_string("(\\d+)-(\\d+) (\\w): (\\w+)")
-  let [_, left, right, letter, code, _] = regex.split(with: r, content: policy)
-  try left = int.parse(left)
-  try right = int.parse(right)
-  Ok(Policy(left, right, letter, code))
-}
-
 fn satisfactory(s: String, validator: fn(Policy) -> Bool) -> Bool {
-  case to_policy(s) {
-    Ok(policy) -> validator(policy)
-    _err -> False
-  }
+  s
+  |> to_policy()
+  |> result.map(validator)
+  |> result.unwrap(False)
 }
 
 fn is_valid_sled_policy(policy: Policy) -> Bool {
