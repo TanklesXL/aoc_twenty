@@ -71,11 +71,11 @@ fn inner_ext_euclid(a, m, x0, x1) -> Int {
   }
 }
 
-pub type Bus {
+type Bus {
   Bus(id: Int, offset: Int)
 }
 
-pub fn find_min(buses: List(Bus)) -> Int {
+fn find_min(buses: List(Bus)) -> Int {
   let prod = list.fold(buses, 1, fn(bus: Bus, acc) { bus.id * acc })
   list.fold(
     buses,
