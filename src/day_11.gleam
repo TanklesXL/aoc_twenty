@@ -157,7 +157,8 @@ fn run(
   handle_empty: SwapChecker,
   handle_full: SwapChecker,
 ) -> Seats {
-  case check_all_once(seats, handle_empty, handle_full) {
+  case seats
+  |> check_all_once(handle_empty, handle_full) {
     [] -> seats
     to_swap ->
       to_swap
