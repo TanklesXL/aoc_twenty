@@ -2,8 +2,18 @@ import gleam/list
 import gleam/map.{Map}
 import gleam/result
 import gleam/string
+import gleam/io
+import gleam/int
+import day_3/input
 
 const pt_1_slope = Slope(right: 3, down: 1)
+
+pub fn run() {
+  // pt 1 solution: 265
+  io.println(string.append("Day 3 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 3154761400
+  io.println(string.append("Day 3 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 pub fn pt_1(input: String) -> Int {
   input

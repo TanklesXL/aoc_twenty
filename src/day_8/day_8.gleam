@@ -5,6 +5,14 @@ import gleam/pair
 import gleam/result
 import gleam/map.{Map}
 import gleam/string
+import day_8/input
+
+pub fn run() {
+  // pt 1 solution: 1859
+  io.println(string.append("Day 8 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 1235
+  io.println(string.append("Day 8 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 pub fn pt_1(input: String) -> Int {
   input

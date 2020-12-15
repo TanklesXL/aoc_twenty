@@ -9,6 +9,14 @@ import gleam/bool
 import gleam/iterator
 import gleam/function
 import gleam/string
+import day_7/input
+
+pub fn run() {
+  // pt 1 solution: 139
+  io.println(string.append("Day 7 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 58175
+  io.println(string.append("Day 7 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 const goal_bag = "shiny gold"
 

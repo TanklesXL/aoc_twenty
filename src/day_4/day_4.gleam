@@ -4,6 +4,15 @@ import gleam/list
 import gleam/pair
 import gleam/result
 import gleam/string
+import gleam/io
+import day_4/input
+
+pub fn run() {
+  // pt 1 solution: 233
+  io.println(string.append("Day 4 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 111
+  io.println(string.append("Day 4 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 const mandatory_keys = ["ecl", "pid", "eyr", "hcl", "byr", "iyr", "hgt"]
 

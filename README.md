@@ -2,7 +2,6 @@
 
 A Gleam program
 
-
 ## Quick start
 
 ```sh
@@ -16,14 +15,14 @@ rebar3 eunit
 rebar3 shell
 ```
 
+## Execute A Run
 
-## Installation
+Print the output for both parts of a given day:
 
-If [available in Hex](https://www.rebar3.org/docs/dependencies#section-declaring-dependencies)
-this package can be installed by adding `aoc_twenty` to your `rebar.config` dependencies:
+```sh
+# Build the escript
+rebar3 escriptize
 
-```erlang
-{deps, [
-    aoc_twenty
-]}.
+# Run for a specific day
+_build/default/bin/aoc_twenty <day>
 ```

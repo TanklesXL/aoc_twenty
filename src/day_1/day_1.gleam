@@ -1,9 +1,19 @@
 import gleam/int
+import gleam/io
+import gleam/string
 import gleam/list
 import gleam/pair
 import gleam/result
+import day_1/input
 
 const sum = 2020
+
+pub fn run() {
+  // pt 1 solution: 972576
+  io.println(string.append("Day 1 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 199300880
+  io.println(string.append("Day 1 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 pub fn pt_1(input: List(Int)) -> Int {
   let Ok(tuple(a, b)) = find_two_that_sum(in: input, to: sum)

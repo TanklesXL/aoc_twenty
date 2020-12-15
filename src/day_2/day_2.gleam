@@ -3,6 +3,15 @@ import gleam/list
 import gleam/result
 import gleam/regex
 import gleam/string
+import gleam/io
+import day_2/input
+
+pub fn run() {
+  // pt 1 solution: 546
+  io.println(string.append("Day 2 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 275
+  io.println(string.append("Day 2 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 pub fn pt_1(input: List(String)) -> Int {
   input

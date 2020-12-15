@@ -1,13 +1,23 @@
 import gleam/string
 import gleam/list
+import gleam/io
+import gleam/int
 import gleam/result
 import gleam/pair
 import gleam/map.{Map}
+import day_11/input
+
+pub fn run() {
+  // pt 1 solution: 2238
+  io.println(string.append("Day 11 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 2013
+  io.println(string.append("Day 11 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 pub fn pt_1(input: String) -> Int {
   input
   |> pre_process()
-  |> run(handle_empty(adjacent_seats), handle_full(adjacent_seats, 4))
+  |> execute(handle_empty(adjacent_seats), handle_full(adjacent_seats, 4))
   |> map.fold(
     [],
     fn(_, row, acc) { map.fold(row, acc, fn(_, spot, acc) { [spot, ..acc] }) },
@@ -19,7 +29,7 @@ pub fn pt_1(input: String) -> Int {
 pub fn pt_2(input: String) -> Int {
   input
   |> pre_process()
-  |> run(handle_empty(visible_seats), handle_full(visible_seats, 5))
+  |> execute(handle_empty(visible_seats), handle_full(visible_seats, 5))
   |> map.fold(
     [],
     fn(_, row, acc) { map.fold(row, acc, fn(_, spot, acc) { [spot, ..acc] }) },
@@ -152,7 +162,7 @@ fn handle_full(
   }
 }
 
-fn run(
+fn execute(
   seats: Seats,
   handle_empty: SwapChecker,
   handle_full: SwapChecker,
@@ -163,7 +173,7 @@ fn run(
     to_swap ->
       to_swap
       |> list.fold(seats, do_swap)
-      |> run(handle_empty, handle_full)
+      |> execute(handle_empty, handle_full)
   }
 }
 

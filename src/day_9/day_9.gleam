@@ -1,8 +1,18 @@
 import gleam/int
+import gleam/io
 import gleam/list
 import gleam/pair
+import gleam/string
 import gleam/result
 import gleam/set.{Set}
+import day_9/input
+
+pub fn run() {
+  // pt 1 solution: 393911906
+  io.println(string.append("Day 9 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 59341885
+  io.println(string.append("Day 9 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 pub fn pt_1(input: List(Int)) -> Int {
   find_not_sum_of_pair(input, 25)

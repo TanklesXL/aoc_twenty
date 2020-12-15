@@ -4,6 +4,14 @@ import gleam/string
 import gleam/map.{Map}
 import gleam/bitwise
 import gleam/io
+import day_14/input
+
+pub fn run() {
+  // pt 1 solution: 9628746976360
+  io.println(string.append("Day 14 Part 1: ", int.to_string(pt_1(input.input))))
+  // pt 2 solution: 4574598714592
+  io.println(string.append("Day 14 Part 2: ", int.to_string(pt_2(input.input))))
+}
 
 pub fn pt_1(input: String) -> Int {
   input
