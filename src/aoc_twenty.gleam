@@ -46,19 +46,25 @@ pub fn run_day(day: Int) -> Result(Nil, String) {
   }
 }
 
+fn parse_day(day: Charlist) -> Result(Int, String) {
+  let day = list_to_binary(day)
+  day
+  |> int.parse()
+  |> result.map_error(fn(_) {
+    string.join(["The day supplied:", day, "is not an integer"], " ")
+  })
+}
+
 pub fn main(args: List(Charlist)) {
-  let result = case args {
-    [day] -> {
-      let day = list_to_binary(day)
-      day
-      |> int.parse()
-      |> result.map_error(fn(_) {
-        string.join(["The day supplied:", day, "is not an integer"], " ")
-      })
-      |> result.then(run_day)
+  let result =
+    case args {
+      [] -> Ok(list.range(1, 26))
+      _ ->
+        args
+        |> list.map(parse_day)
+        |> result.all()
     }
-    _ -> Error("Please choose exactly one day")
-  }
+    |> result.then(fn(days) { result.all(list.map(days, run_day)) })
 
   case result {
     Error(error) -> io.println(string.append("ERROR: ", error))
