@@ -1,6 +1,10 @@
 # aoc_twenty
 
-A Gleam program
+Advent of code 2020 in gleam!
+
+I'm new to gleam but I took the opportunity to try something new this year and learn.
+
+Inspiration for setting up main and running with escript from [jakobht/aoc_2020](https://github.com/jakobht/aoc_2020).
 
 ## Quick start
 
