@@ -27,6 +27,13 @@ Print the output for both parts of a given day:
 # Build the escript
 rebar3 escriptize
 
+# Run for all days
+_build/default/bin/aoc_twenty
+
 # Run for a specific day
 _build/default/bin/aoc_twenty <day>
+
+# Run for several days
+_build/default/bin/aoc_twenty <day_x> <day_y> <day_z>
+
 ```
