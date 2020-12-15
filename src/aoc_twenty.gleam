@@ -4,21 +4,21 @@ import gleam/int
 import gleam/list
 import gleam/result
 import gleam/iterator
-import day_1/day_1
-import day_2/day_2
-import day_3/day_3
-import day_4/day_4
-import day_5/day_5
-import day_6/day_6
-import day_7/day_7
-import day_8/day_8
-import day_9/day_9
-import day_10/day_10
-import day_11/day_11
-// import day_12/day_12
-import day_13/day_13
-import day_14/day_14
-import day_15/day_15
+import day_1/solution as day_1
+import day_2/solution as day_2
+import day_3/solution as day_3
+import day_4/solution as day_4
+import day_5/solution as day_5
+import day_6/solution as day_6
+import day_7/solution as day_7
+import day_8/solution as day_8
+import day_9/solution as day_9
+import day_10/solution as day_10
+import day_11/solution as day_11
+// import day_12/solution as day_12
+import day_13/solution as day_13
+import day_14/solution as day_14
+import day_15/solution as day_15
 
 pub external type Charlist
 
