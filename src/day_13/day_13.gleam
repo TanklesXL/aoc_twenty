@@ -6,9 +6,7 @@ import gleam/string
 import day_13/input
 
 pub fn run() {
-  // pt 1 solution: 2092
   io.println(string.append("Day 13 Part 1: ", int.to_string(pt_1(input.input))))
-  // pt 2 solution: 702970661767766
   io.println(string.append("Day 13 Part 2: ", int.to_string(pt_2(input.input))))
 }
 

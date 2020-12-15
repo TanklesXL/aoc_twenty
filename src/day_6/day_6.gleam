@@ -6,9 +6,7 @@ import gleam/set.{Set}
 import day_6/input
 
 pub fn run() {
-  // pt 1 solution: 6457
   io.println(string.append("Day 6 Part 1: ", int.to_string(pt_1(input.input))))
-  // pt 2 solution: 3260
   io.println(string.append("Day 6 Part 2: ", int.to_string(pt_2(input.input))))
 }
 
