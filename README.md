@@ -1,6 +1,6 @@
 # aoc_twenty
 
-Advent of code 2020 in gleam!
+Advent of code 2020 in gleam! (gleam v0.12.1)
 
 I'm new to gleam but I took the opportunity to try something new this year and learn.
 
