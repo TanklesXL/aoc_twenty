@@ -28,7 +28,7 @@ pub fn pt_2(input: List(Int)) -> Int {
 }
 
 fn execute(input: List(Int), iterations: Int) -> Int {
-  assert starting = init(input)
+  let starting = init(input)
   assert Ok(last_inserted) = list.at(input, list.length(input) - 1)
   let starting_acc = tuple(last_inserted, starting)
 
