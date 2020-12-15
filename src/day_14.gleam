@@ -19,7 +19,7 @@ pub fn pt_2(input: String) -> Int {
   |> map.fold(0, fn(_k, v, acc) { v + acc })
 }
 
-pub type Address {
+type Address {
   Address(location: Int, value: Int)
 }
 
@@ -113,7 +113,7 @@ fn address_variants(masking: Masking) -> List(Address) {
   |> list.flatten()
 }
 
-pub fn single_address_variant(mask: String, address: Address) -> List(Address) {
+fn single_address_variant(mask: String, address: Address) -> List(Address) {
   mask
   |> string.to_graphemes()
   |> list.zip(
