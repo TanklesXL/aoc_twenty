@@ -19,6 +19,7 @@ import day_11/solution as day_11
 import day_13/solution as day_13
 import day_14/solution as day_14
 import day_15/solution as day_15
+import day_16/solution as day_16
 
 pub external type Charlist
 
@@ -41,6 +42,7 @@ pub fn run_day(day: Int) -> Result(Nil, String) {
     13 -> Ok(day_13.run())
     14 -> Ok(day_14.run())
     15 -> Ok(day_15.run())
+    16 -> Ok(day_16.run())
     _ ->
       Error(string.join(["Day:", int.to_string(day), "is not supported"], " "))
   }
