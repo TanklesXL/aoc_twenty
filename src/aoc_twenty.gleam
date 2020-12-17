@@ -60,17 +60,10 @@ fn parse_day(day: Charlist) -> Result(Int, String) {
 }
 
 pub fn main(args: List(Charlist)) {
-  let result =
-    case args {
-      [] -> Ok(list.range(1, 26))
-      _ ->
-        args
-        |> list.map(parse_day)
-        |> result.all()
-    }
-    |> result.then(fn(days) { result.all(list.map(days, run_day)) })
-
-  case result {
+  case args
+  |> list.map(parse_day)
+  |> result.all()
+  |> result.then(fn(days) { result.all(list.map(days, run_day)) }) {
     Error(error) -> io.println(string.append("ERROR: ", error))
     Ok(_) -> Nil
   }
