@@ -10,7 +10,7 @@ import gleam/map.{Map}
 
 pub fn run() {
   io.println(string.append("Day 16 Part 1: ", int.to_string(pt_1(input.input))))
-  //   io.println(string.append("Day 16 Part 2: ", int.to_string(pt_2(input.input))))
+  io.println(string.append("Day 16 Part 2: ", int.to_string(pt_2(input.input))))
 }
 
 pub fn pt_1(input: String) -> Int {
@@ -37,7 +37,24 @@ pub fn pt_1(input: String) -> Int {
 }
 
 pub fn pt_2(input: String) -> Int {
-  todo
+  let tuple(rules, your_ticket, other_tickets) = pre_process(input)
+
+  let lists_and_matches = only_valid_tickets(other_tickets, rules)
+
+  list.range(0, map.size(rules))
+  |> list.map(fn(c) { tuple(c, potential_column_names(lists_and_matches, c)) })
+  |> list.sort(fn(a, b) {
+    int.compare(set.size(pair.second(a)), set.size(pair.second(b)))
+  })
+  |> most_constrained_variable(map.new())
+  |> map.filter(fn(_name, val) { string.contains(val, "departure") })
+  |> map.fold(
+    1,
+    fn(column, _rule_name, acc) {
+      assert Ok(x) = list.at(your_ticket, column)
+      acc * x
+    },
+  )
 }
 
 type Ticket =
@@ -109,6 +126,20 @@ fn is_in_ranges(num i: Int, for range: Ranges) -> Bool {
 type RulesSatisfied =
   Map(Int, Set(String))
 
+fn only_valid_tickets(
+  tickets: List(Ticket),
+  rules: Rules,
+) -> List(tuple(Ticket, RulesSatisfied)) {
+  tickets
+  |> list.map(fn(ticket) { tuple(ticket, match_nums_with_rules(ticket, rules)) })
+  |> list.filter(fn(matches) {
+    matches
+    |> pair.second()
+    |> is_invalid()
+    |> bool.negate()
+  })
+}
+
 fn match_nums_with_rules(ticket: Ticket, rules: Rules) -> RulesSatisfied {
   list.fold(
     ticket,
@@ -130,4 +161,57 @@ fn is_invalid(satisfied: RulesSatisfied) -> Bool {
   satisfied
   |> map.filter(fn(_, rule_names) { set.size(rule_names) == 0 })
   |> map.size() != 0
+}
+
+const rule_names = [
+  "departure location", "departure station", "departure platform", "departure track",
+  "departure date", "departure time", "arrival location", "arrival station", "arrival platform",
+  "arrival track", "class", "duration", "price", "route", "row", "seat", "train",
+  "type", "wagon", "zone",
+]
+
+fn potential_column_names(
+  matches: List(tuple(List(Int), RulesSatisfied)),
+  column: Int,
+) -> Set(String) {
+  list.fold(
+    matches,
+    set.from_list(rule_names),
+    fn(match, acc) {
+      let tuple(l, satisfied) = match
+      assert Ok(key) = list.at(l, column)
+      assert Ok(rules_satisfied) = map.get(satisfied, key)
+      set.intersection(acc, rules_satisfied)
+    },
+  )
+}
+
+// note: requires list to be sorted in increasing order by number of potential names for that column
+// only works because once sorted the # of potential names on the columns are 1,2,3,4,...,20
+// and because for every constrained variable n_0...n_i,
+// the number of potential names on n_i+1 are always the names on n + some name that is
+// in none of the previous potential names for vars in n_0 to n_i
+fn most_constrained_variable(
+  options_by_column: List(tuple(Int, Set(String))),
+  acc: Map(Int, String),
+) -> Map(Int, String) {
+  case options_by_column {
+    [] -> acc
+    [h, ..t] -> {
+      let tuple(col, possible_names) = h
+      assert [rule_name] = set.to_list(possible_names)
+      list.map(
+        t,
+        fn(p) {
+          tuple(
+            pair.first(p),
+            p
+            |> pair.second()
+            |> set.delete(rule_name),
+          )
+        },
+      )
+      |> most_constrained_variable(map.insert(acc, col, rule_name))
+    }
+  }
 }
