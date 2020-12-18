@@ -3,7 +3,7 @@ import gleam/io
 import gleam/int
 import gleam/string
 import gleam/list
-import gleam/iterator
+import gleam/iterator.{Iterator}
 import gleam/result
 import gleam/set
 import gleam/map.{Map}
@@ -65,16 +65,15 @@ fn pre_process(input: String) -> Space {
   |> map.from_list()
 }
 
-fn neighbour_generator(with_dim dimensions: Int) -> fn(Pos) -> List(Pos) {
+fn neighbour_generator(with_dim dimensions: Int) -> fn(Pos) -> Iterator(Pos) {
   case dimensions {
     3 -> neighbours_3d
     4 -> neighbours_4d
   }
 }
 
-fn neighbours_3d(p: Pos) -> List(Pos) {
+fn neighbours_3d(p: Pos) -> Iterator(Pos) {
   let offsets = [-1, 0, 1]
-
   list.fold(
     offsets,
     set.new(),
@@ -99,9 +98,10 @@ fn neighbours_3d(p: Pos) -> List(Pos) {
   )
   |> set.delete(p)
   |> set.to_list()
+  |> iterator.from_list()
 }
 
-fn neighbours_4d(p: Pos) -> List(Pos) {
+fn neighbours_4d(p: Pos) -> Iterator(Pos) {
   let offsets = [-1, 0, 1]
 
   list.fold(
@@ -139,13 +139,14 @@ fn neighbours_4d(p: Pos) -> List(Pos) {
   )
   |> set.delete(p)
   |> set.to_list()
+  |> iterator.from_list()
 }
 
 fn new_cube_value(
   with cube: Cube,
   at pos: Pos,
   in space: Space,
-  neighbour_generator neighbours: fn(Pos) -> List(Pos),
+  neighbour_generator neighbours: fn(Pos) -> Iterator(Pos),
 ) -> Cube {
   case cube {
     Active -> handle_active(at: pos, in: space, neighbour_generator: neighbours)
@@ -157,7 +158,7 @@ fn new_cube_value(
 fn handle_active(
   at pos: Pos,
   in space: Space,
-  neighbour_generator neighbours: fn(Pos) -> List(Pos),
+  neighbour_generator neighbours: fn(Pos) -> Iterator(Pos),
 ) -> Cube {
   case active_neighbours_count(
     next_to: pos,
@@ -172,7 +173,7 @@ fn handle_active(
 fn handle_inactive(
   at pos: Pos,
   in space: Space,
-  neighbour_generator neighbours: fn(Pos) -> List(Pos),
+  neighbour_generator neighbours: fn(Pos) -> Iterator(Pos),
 ) -> Cube {
   case active_neighbours_count(
     next_to: pos,
@@ -187,20 +188,22 @@ fn handle_inactive(
 fn active_neighbours_count(
   next_to pos: Pos,
   in space: Space,
-  neighbour_generator neighbours: fn(Pos) -> List(Pos),
+  neighbour_generator neighbours: fn(Pos) -> Iterator(Pos),
 ) -> Int {
   pos
   |> neighbours()
+  |> iterator.to_list()
   |> list.filter_map(map.get(space, _))
   |> list.filter(fn(cube) { cube == Active })
   |> list.length()
 }
 
-fn expand_world(space: Space, neighbours: fn(Pos) -> List(Pos)) -> Space {
+fn expand_world(space: Space, neighbours: fn(Pos) -> Iterator(Pos)) -> Space {
   space
   |> map.keys()
-  |> list.map(neighbours)
-  |> list.flatten()
+  |> iterator.from_list()
+  |> iterator.flat_map(neighbours)
+  |> iterator.to_list()
   |> set.from_list()
   |> set.fold(
     space,
@@ -210,7 +213,7 @@ fn expand_world(space: Space, neighbours: fn(Pos) -> List(Pos)) -> Space {
 
 fn new_world(
   space: Space,
-  neighbour_generator neighbours: fn(Pos) -> List(Pos),
+  neighbour_generator neighbours: fn(Pos) -> Iterator(Pos),
 ) -> Space {
   let expanded = expand_world(space, neighbours)
   map.fold(
