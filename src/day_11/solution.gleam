@@ -125,19 +125,18 @@ fn go_until_seat(dest: Pos, origin: Pos, seats: Seats) -> Spot {
 type SwapChecker =
   fn(Pos, Seats) -> Bool
 
+fn sum_full_seats(spot: Spot, acc: Int) -> Int {
+  case spot {
+    FullSeat -> acc + 1
+    _ -> acc
+  }
+}
+
 fn handle_empty(with_neighbours generator: NeighbourGenerator) -> SwapChecker {
   fn(p, seats) -> Bool {
     p
     |> generator(seats)
-    |> list.fold(
-      0,
-      fn(spot: Spot, acc) {
-        case spot {
-          FullSeat -> acc + 1
-          _ -> acc
-        }
-      },
-    ) == 0
+    |> list.fold(0, sum_full_seats) == 0
   }
 }
 
@@ -148,15 +147,7 @@ fn handle_full(
   fn(p, seats) -> Bool {
     p
     |> generator(seats)
-    |> list.fold(
-      0,
-      fn(spot: Spot, acc) {
-        case spot {
-          FullSeat -> acc + 1
-          _ -> acc
-        }
-      },
-    ) >= threshold
+    |> list.fold(0, sum_full_seats) >= threshold
   }
 }
 

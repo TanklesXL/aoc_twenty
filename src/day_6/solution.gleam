@@ -43,7 +43,7 @@ fn process(
   input
   |> list.map(set_compare(_, comparator))
   |> list.map(set.size)
-  |> list.fold(0, fn(answered, acc) { answered + acc })
+  |> int.sum()
 }
 
 fn set_compare(

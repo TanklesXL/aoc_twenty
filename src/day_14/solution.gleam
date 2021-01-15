@@ -15,14 +15,16 @@ pub fn pt_1(input: String) -> Int {
   input
   |> pre_process()
   |> list.fold(map.new(), apply_value_mask)
-  |> map.fold(0, fn(_k, v, acc) { v + acc })
+  |> map.values()
+  |> int.sum()
 }
 
 pub fn pt_2(input: String) -> Int {
   input
   |> pre_process()
   |> list.fold(map.new(), apply_address_mask)
-  |> map.fold(0, fn(_k, v, acc) { v + acc })
+  |> map.values()
+  |> int.sum()
 }
 
 type Address {

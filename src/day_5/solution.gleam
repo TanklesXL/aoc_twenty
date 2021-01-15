@@ -43,7 +43,7 @@ fn calculate_seat_id(ticket: String) -> Int {
       "R" | "B" -> bitwise.shift_left(1, i)
     }
   })
-  |> list.fold(0, fn(val, acc) { val + acc })
+  |> int.sum()
 }
 
 fn find_missing(seats: List(Int)) -> Int {

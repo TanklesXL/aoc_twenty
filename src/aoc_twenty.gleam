@@ -15,7 +15,6 @@ import day_8/solution as day_8
 import day_9/solution as day_9
 import day_10/solution as day_10
 import day_11/solution as day_11
-// import day_12/solution as day_12
 import day_13/solution as day_13
 import day_14/solution as day_14
 import day_15/solution as day_15
@@ -24,7 +23,7 @@ import day_17/solution as day_17
 
 pub external type Charlist
 
-external fn list_to_binary(Charlist) -> String =
+pub external fn list_to_binary(Charlist) -> String =
   "erlang" "list_to_binary"
 
 pub fn run_day(day: Int) -> Result(Nil, String) {

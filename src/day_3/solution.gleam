@@ -41,7 +41,7 @@ pub fn pt_2(input: String) -> Int {
 
   pt_2_slopes
   |> list.map(count)
-  |> list.fold(1, fn(found, acc) { found * acc })
+  |> int.product()
 }
 
 fn pre_process(input: String) -> Map(Int, Map(Int, String)) {
