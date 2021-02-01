@@ -66,8 +66,10 @@ fn swap_jmp_and_nop(op: Result(Op, Nil)) -> Op {
 fn pre_process(input: String) -> Map(Int, Op) {
   input
   |> string.split("\n")
-  |> list.index_map(fn(idx, line) { tuple(idx, to_op(line)) })
-  |> map.from_list()
+  |> list.index_fold(
+    map.new(),
+    fn(i, line, acc) { map.insert(acc, i, to_op(line)) },
+  )
 }
 
 fn to_op(line: String) -> Op {

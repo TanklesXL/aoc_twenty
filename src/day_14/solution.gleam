@@ -94,11 +94,9 @@ fn x_as_1(masking: String) -> Int {
 fn parse_bin(s: String) -> Int {
   s
   |> string.to_graphemes()
-  |> list.index_map(fn(i, v) { tuple(i, v) })
-  |> list.fold(
+  |> list.index_fold(
     0,
-    fn(p, acc) {
-      let tuple(i, v) = p
+    fn(i, v, acc) {
       let Ok(v) = int.parse(v)
       acc + bitwise.shift_left(v, 35 - i)
     },

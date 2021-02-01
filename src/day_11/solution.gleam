@@ -52,14 +52,15 @@ fn pre_process(input: String) -> Seats {
   |> list.map(fn(line) {
     line
     |> string.to_graphemes()
-    |> list.index_map(fn(i, char) { tuple(i, case char {
-          "." -> Floor
-          "L" -> EmptySeat
-        }) })
-    |> map.from_list()
+    |> list.index_fold(
+      map.new(),
+      fn(i, char, acc) { map.insert(acc, i, case char {
+            "." -> Floor
+            "L" -> EmptySeat
+          }) },
+    )
   })
-  |> list.index_map(fn(i, row) { tuple(i, row) })
-  |> map.from_list()
+  |> list.index_fold(map.new(), fn(i, row, acc) { map.insert(acc, i, row) })
 }
 
 type Pos {
