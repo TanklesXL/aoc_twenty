@@ -47,7 +47,7 @@ fn pre_process(input: String) -> Bags {
   |> iterator.map(string.split(_, " contain "))
   |> iterator.map(fn(line) {
     let [outer, inner] = line
-    tuple(outer, parse_capacity(inner))
+    #(outer, parse_capacity(inner))
   })
   |> iterator.to_list()
   |> map.from_list()
@@ -60,7 +60,7 @@ fn parse_capacity(capacities: String) -> List(Capacity) {
       capacities
       |> string.split(", ")
       |> list.map(fn(capacity) {
-        let Ok(tuple(count, name)) = string.split_once(capacity, " ")
+        let Ok(#(count, name)) = string.split_once(capacity, " ")
         let Ok(count) = int.parse(count)
         Capacity(name: name, amount: count)
       })

@@ -47,9 +47,9 @@ pub fn pt_2(input: String) -> Int {
 
   buses
   |> string.split(",")
-  |> list.index_map(fn(i, s) { tuple(i, s) })
+  |> list.index_map(fn(i, s) { #(i, s) })
   |> list.filter_map(fn(p) {
-    let tuple(offset, id) = p
+    let #(offset, id) = p
     try id = int.parse(id)
     let offset = case id > offset {
       True -> id - offset

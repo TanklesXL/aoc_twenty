@@ -20,7 +20,7 @@ pub fn pt_1(input: String) -> Int {
 }
 
 pub fn pt_2(input: String) -> Int {
-  let Ok(tuple(acc, _)) =
+  let Ok(#(acc, _)) =
     input
     |> pre_process()
     |> permutations_with_swaps()
@@ -81,7 +81,7 @@ fn to_op(line: String) -> Op {
 }
 
 fn parse_signed_int(s: String) -> Int {
-  let Ok(tuple(sign, num)) = string.pop_grapheme(s)
+  let Ok(#(sign, num)) = string.pop_grapheme(s)
   let Ok(i) = int.parse(num)
 
   case sign {
@@ -90,9 +90,9 @@ fn parse_signed_int(s: String) -> Int {
   }
 }
 
-fn execute(ops: Map(Int, Op), to_exec: Int, acc: Int) -> tuple(Int, Int) {
+fn execute(ops: Map(Int, Op), to_exec: Int, acc: Int) -> #(Int, Int) {
   case map.get(ops, to_exec) {
-    Error(_) -> tuple(acc, to_exec)
+    Error(_) -> #(acc, to_exec)
     Ok(op) ->
       case op {
         NOP(_) -> execute(map.delete(ops, to_exec), to_exec + 1, acc)

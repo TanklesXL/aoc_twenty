@@ -14,7 +14,7 @@ pub fn run() {
 }
 
 pub fn pt_1(input: String) -> Int {
-  let tuple(rules, _your_ticket, other_tickets) = pre_process(input)
+  let #(rules, _your_ticket, other_tickets) = pre_process(input)
 
   other_tickets
   |> list.map(match_nums_with_rules(_, rules))
@@ -37,12 +37,12 @@ pub fn pt_1(input: String) -> Int {
 }
 
 pub fn pt_2(input: String) -> Int {
-  let tuple(rules, your_ticket, other_tickets) = pre_process(input)
+  let #(rules, your_ticket, other_tickets) = pre_process(input)
 
   let lists_and_matches = only_valid_tickets(other_tickets, rules)
 
   list.range(0, map.size(rules))
-  |> list.map(fn(c) { tuple(c, potential_column_names(lists_and_matches, c)) })
+  |> list.map(fn(c) { #(c, potential_column_names(lists_and_matches, c)) })
   |> list.sort(fn(a, b) {
     int.compare(set.size(pair.second(a)), set.size(pair.second(b)))
   })
@@ -71,7 +71,7 @@ type Ranges {
 type Rules =
   Map(String, Ranges)
 
-fn pre_process(input: String) -> tuple(Rules, Ticket, List(Ticket)) {
+fn pre_process(input: String) -> #(Rules, Ticket, List(Ticket)) {
   let [prelude, your_ticket, nearby_tickets] = string.split(input, "\n\n")
   let rules = parse_rules(prelude)
   let [_, your_ticket] = string.split(your_ticket, "\n")
@@ -80,7 +80,7 @@ fn pre_process(input: String) -> tuple(Rules, Ticket, List(Ticket)) {
   let [_, ..nearby_tickets] = string.split(nearby_tickets, "\n")
   let nearby_tickets = list.map(nearby_tickets, parse_ticket_line)
 
-  tuple(rules, your_ticket, nearby_tickets)
+  #(rules, your_ticket, nearby_tickets)
 }
 
 fn parse_rules(rules: String) -> Rules {
@@ -129,9 +129,9 @@ type RulesSatisfied =
 fn only_valid_tickets(
   tickets: List(Ticket),
   rules: Rules,
-) -> List(tuple(Ticket, RulesSatisfied)) {
+) -> List(#(Ticket, RulesSatisfied)) {
   tickets
-  |> list.map(fn(ticket) { tuple(ticket, match_nums_with_rules(ticket, rules)) })
+  |> list.map(fn(ticket) { #(ticket, match_nums_with_rules(ticket, rules)) })
   |> list.filter(fn(matches) {
     matches
     |> pair.second()
@@ -171,14 +171,14 @@ const rule_names = [
 ]
 
 fn potential_column_names(
-  matches: List(tuple(List(Int), RulesSatisfied)),
+  matches: List(#(List(Int), RulesSatisfied)),
   column: Int,
 ) -> Set(String) {
   list.fold(
     matches,
     set.from_list(rule_names),
     fn(match, acc) {
-      let tuple(l, satisfied) = match
+      let #(l, satisfied) = match
       assert Ok(key) = list.at(l, column)
       assert Ok(rules_satisfied) = map.get(satisfied, key)
       set.intersection(acc, rules_satisfied)
@@ -192,26 +192,18 @@ fn potential_column_names(
 // the number of potential names on n_i+1 are always the names on n + some name that is
 // in none of the previous potential names for vars in n_0 to n_i
 fn most_constrained_variable(
-  options_by_column: List(tuple(Int, Set(String))),
+  options_by_column: List(#(Int, Set(String))),
   acc: Map(Int, String),
 ) -> Map(Int, String) {
   case options_by_column {
     [] -> acc
     [h, ..t] -> {
-      let tuple(col, possible_names) = h
-      assert [rule_name] = set.to_list(possible_names)
+      assert [rule_name] = set.to_list(h.1)
       list.map(
         t,
-        fn(p) {
-          tuple(
-            pair.first(p),
-            p
-            |> pair.second()
-            |> set.delete(rule_name),
-          )
-        },
+        fn(p: #(Int, Set(String))) { #(p.0, set.delete(p.1, rule_name)) },
       )
-      |> most_constrained_variable(map.insert(acc, col, rule_name))
+      |> most_constrained_variable(map.insert(acc, h.0, rule_name))
     }
   }
 }

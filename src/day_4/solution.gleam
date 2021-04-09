@@ -28,24 +28,24 @@ pub fn pt_2(input: String) -> Int {
   |> list.length()
 }
 
-fn pre_process(input: String) -> List(List(tuple(String, String))) {
+fn pre_process(input: String) -> List(List(#(String, String))) {
   input
   |> string.split("\n\n")
   |> list.map(with: process_passport)
 }
 
-fn process_passport(passport: String) -> List(tuple(String, String)) {
+fn process_passport(passport: String) -> List(#(String, String)) {
   passport
   |> string.split("\n")
   |> list.map(string.split(_, " "))
   |> list.flatten()
   |> list.map(fn(pair) {
     let [key, val] = string.split(pair, ":")
-    tuple(key, val)
+    #(key, val)
   })
 }
 
-fn has_keys(passport: List(tuple(String, String)), keys: List(String)) -> Bool {
+fn has_keys(passport: List(#(String, String)), keys: List(String)) -> Bool {
   list.all(keys, function.compose(list.key_find(passport, _), result.is_ok))
 }
 
@@ -56,12 +56,12 @@ fn validate_as_int(s: String, min: Int, max: Int) -> Bool {
   }
 }
 
-fn is_valid_passport(passport: List(tuple(String, String))) -> Bool {
+fn is_valid_passport(passport: List(#(String, String))) -> Bool {
   [
-    tuple("byr", validate_as_int(_, 1920, 2002)),
-    tuple("iyr", validate_as_int(_, 2010, 2020)),
-    tuple("eyr", validate_as_int(_, 2020, 2030)),
-    tuple(
+    #("byr", validate_as_int(_, 1920, 2002)),
+    #("iyr", validate_as_int(_, 2010, 2020)),
+    #("eyr", validate_as_int(_, 2020, 2030)),
+    #(
       "hgt",
       fn(hgt) {
         case string.slice(hgt, -2, 2) {
@@ -77,7 +77,7 @@ fn is_valid_passport(passport: List(tuple(String, String))) -> Bool {
         }
       },
     ),
-    tuple(
+    #(
       "hcl",
       fn(hcl) {
         case string.to_graphemes(hcl) {
@@ -95,18 +95,18 @@ fn is_valid_passport(passport: List(tuple(String, String))) -> Bool {
         }
       },
     ),
-    tuple(
+    #(
       "ecl",
       list.contains(["amb", "blu", "brn", "gry", "grn", "hzl", "oth"], _),
     ),
-    tuple(
+    #(
       "pid",
       fn(pid) { string.length(pid) == 9 && result.is_ok(int.parse(pid)) },
     ),
   ]
-  |> list.all(fn(validator) {
-    case list.key_find(passport, pair.first(validator)) {
-      Ok(val) -> pair.second(validator)(val)
+  |> list.all(fn(validator: #(String, fn(String) -> Bool)) {
+    case list.key_find(passport, validator.0) {
+      Ok(val) -> validator.1(val)
       _ -> False
     }
   })

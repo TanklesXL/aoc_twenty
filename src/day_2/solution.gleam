@@ -30,7 +30,7 @@ type Policy {
 fn to_policy(policy: String) -> Result(Policy, Nil) {
   let [range, letter, code] = string.split(policy, " ")
   let letter = string.drop_right(letter, 1)
-  try tuple(left, right) = string.split_once(range, "-")
+  try #(left, right) = string.split_once(range, "-")
   try left = int.parse(left)
   try right = int.parse(right)
   Ok(Policy(left, right, letter, code))

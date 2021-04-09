@@ -52,7 +52,7 @@ fn new_masking(input: String) -> Masking {
 }
 
 fn new_address(input: String) -> Address {
-  let Ok(tuple(l, r)) = string.split_once(input, " = ")
+  let Ok(#(l, r)) = string.split_once(input, " = ")
   let Ok(value) = int.parse(r)
   let Ok(location) =
     l
@@ -128,7 +128,7 @@ fn single_address_variant(mask: String, address: Address) -> List(Address) {
     |> string.to_graphemes(),
   )
   |> list.map(fn(p) {
-    let tuple(from_mask, from_addr) = p
+    let #(from_mask, from_addr) = p
     case from_mask {
       "0" -> from_addr
       _ -> from_mask

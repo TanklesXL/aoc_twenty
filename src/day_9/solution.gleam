@@ -28,7 +28,7 @@ pub fn pt_2(input: List(Int)) -> Int {
 }
 
 fn find_not_sum_of_pair(l: List(Int), preamble_size: Int) -> Int {
-  let tuple(preamble, [h, .._]) = list.split(l, preamble_size)
+  let #(preamble, [h, .._]) = list.split(l, preamble_size)
   case preamble
   |> sum_pairs()
   |> set.contains(h) {

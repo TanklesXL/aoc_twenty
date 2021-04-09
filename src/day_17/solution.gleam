@@ -55,7 +55,7 @@ fn pre_process(input: String) -> Space {
   |> list.index_map(fn(i, row) {
     list.index_map(
       string.to_graphemes(row),
-      fn(j, space) { tuple(Pos(row: i, col: j, depth: 0, time: 0), case space {
+      fn(j, space) { #(Pos(row: i, col: j, depth: 0, time: 0), case space {
             "." -> Inactive
             "#" -> Active
           }) },
@@ -221,7 +221,7 @@ fn new_world(
     [],
     fn(pos, cube, acc) {
       [
-        tuple(
+        #(
           pos,
           new_cube_value(
             with: cube,

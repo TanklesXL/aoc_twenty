@@ -47,7 +47,7 @@ pub fn pt_2(input: String) -> Int {
 fn pre_process(input: String) -> Map(Int, Map(Int, String)) {
   input
   |> string.split(on: "\n")
-  |> list.index_map(fn(i, row) { tuple(i, string.to_graphemes(row)) })
+  |> list.index_map(fn(i, row) { #(i, string.to_graphemes(row)) })
   |> map.from_list()
   |> map.map_values(fn(_, row) {
     list.range(0, list.length(row))

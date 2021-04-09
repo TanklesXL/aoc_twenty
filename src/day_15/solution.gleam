@@ -28,7 +28,7 @@ pub fn pt_2(input: List(Int)) -> Int {
 fn execute(input: List(Int), iterations: Int) -> Int {
   let starting = init(input)
   assert Ok(last_inserted) = list.at(input, list.length(input) - 1)
-  let starting_acc = tuple(last_inserted, starting)
+  let starting_acc = #(last_inserted, starting)
 
   iterator.range(list.length(input) + 1, iterations + 1)
   |> iterator.fold(starting_acc, speak)
@@ -47,17 +47,14 @@ fn init(l: List(Int)) -> Map(Int, Spoken) {
     lt,
     map.new(),
     fn(t, acc) {
-      let tuple(val, i) = t
+      let #(val, i) = t
       map.insert(acc, val, Once(i))
     },
   )
 }
 
-fn speak(
-  step: Int,
-  acc: tuple(Int, Map(Int, Spoken)),
-) -> tuple(Int, Map(Int, Spoken)) {
-  let tuple(last_inserted, when_inserted) = acc
+fn speak(step: Int, acc: #(Int, Map(Int, Spoken))) -> #(Int, Map(Int, Spoken)) {
+  let #(last_inserted, when_inserted) = acc
   assert Ok(when) = map.get(when_inserted, last_inserted)
 
   let to_update = case when {
@@ -74,5 +71,5 @@ fn speak(
     }
   }
 
-  tuple(to_update, map.update(when_inserted, to_update, updater))
+  #(to_update, map.update(when_inserted, to_update, updater))
 }

@@ -53,7 +53,7 @@ pub fn pt_2(input: List(Int)) -> Int {
 
   let Ok(output) =
     input
-    |> list.fold(map.from_list([tuple(0, 1)]), accumulate_jolts)
+    |> list.fold(map.from_list([#(0, 1)]), accumulate_jolts)
     |> map.get(last_or_zero(input))
 
   output
