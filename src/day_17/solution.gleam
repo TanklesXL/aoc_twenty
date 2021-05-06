@@ -29,7 +29,7 @@ fn execute(input: String, dimensions: Int) -> Int {
   fn() { Nil }
   |> iterator.repeatedly()
   |> iterator.take(num_steps)
-  |> list.fold(
+  |> iterator.fold(
     space,
     fn(_, space) { new_world(space, neighbour_generator(dimensions)) },
   )

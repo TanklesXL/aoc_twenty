@@ -6,7 +6,6 @@
    [kernel,
     stdlib,
     gleam_stdlib,
-    gleam_otp,
     gleam_bitwise
    ]},
   {env,[]},
