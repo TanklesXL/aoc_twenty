@@ -9,37 +9,39 @@ import day_1/input
 const sum = 2020
 
 pub fn run() {
-  io.println(string.append("Day 1 Part 1: ", int.to_string(pt_1(input.input))))
-  io.println(string.append("Day 1 Part 2: ", int.to_string(pt_2(input.input))))
+  io.println(string.append(
+    "Day 1 Part 1: ",
+    int.to_string(pt_1(input.input, sum)),
+  ))
+  io.println(string.append(
+    "Day 1 Part 2: ",
+    int.to_string(pt_2(input.input, sum)),
+  ))
 }
 
-pub fn pt_1(input: List(Int)) -> Int {
-  let Ok(#(a, b)) = find_two_that_sum(in: input, to: sum)
+pub fn pt_1(input: List(Int), sum: Int) -> Int {
+  assert Ok(#(a, b)) =
+    input
+    |> list.combination_pairs()
+    |> list.find(fn(pair) {
+      let #(a, b) = pair
+      a + b == sum
+    })
 
   a * b
 }
 
-pub fn pt_2(input: List(Int)) -> Int {
-  let Ok(#(a, b, c)) = find_three_that_sum(in: input, to: sum)
+pub fn pt_2(input: List(Int), sum: Int) -> Int {
+  assert Ok(#(a, b, c)) =
+    input
+    |> list.combinations(by: 3)
+    |> list.find_map(fn(triplet) {
+      assert [a, b, c] = triplet
+      case a + b + c == sum {
+        True -> Ok(#(a, b, c))
+        False -> Error(Nil)
+      }
+    })
 
   a * b * c
-}
-
-fn find_two_that_sum(in l: List(Int), to sum: Int) -> Result(#(Int, Int), Nil) {
-  l
-  |> list.find(fn(x) { list.contains(l, sum - x) })
-  |> result.map(fn(x) { #(x, sum - x) })
-}
-
-fn find_three_that_sum(
-  in l: List(Int),
-  to sum: Int,
-) -> Result(#(Int, Int, Int), Nil) {
-  list.find_map(
-    l,
-    fn(x) {
-      find_two_that_sum(in: l, to: sum - x)
-      |> result.map(fn(found: #(Int, Int)) { #(found.0, found.1, x) })
-    },
-  )
 }
